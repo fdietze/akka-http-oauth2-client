@@ -10,6 +10,7 @@ import com.github.dakatsuka.akka.http.oauth2.client.Error.UnauthorizedException
 import com.github.dakatsuka.akka.http.oauth2.client.strategy.Strategy
 
 import scala.concurrent.{ ExecutionContext, Future }
+import scala.util.{ Failure, Success }
 
 class Client(config: ConfigLike, connection: Option[Flow[HttpRequest, HttpResponse, _]] = None)(implicit system: ActorSystem)
     extends ClientLike {
@@ -24,7 +25,7 @@ class Client(config: ConfigLike, connection: Option[Flow[HttpRequest, HttpRespon
 
     source
       .via(connection.getOrElse(defaultConnection))
-      .mapAsync(1)(handleError)
+      .mapAsync(1)(handleHttpError)
       .mapAsync(1)(AccessToken.apply)
       .runWith(Sink.head)
       .map(Right.apply)
@@ -44,10 +45,14 @@ class Client(config: ConfigLike, connection: Option[Flow[HttpRequest, HttpRespon
       case "https" => Http().outgoingConnectionHttps(config.getHost, config.getPort)
     }
 
-  private def handleError(response: HttpResponse)(implicit ec: ExecutionContext, mat: Materializer): Future[HttpResponse] = {
-    if (response.status.isFailure()) UnauthorizedException.fromHttpResponse(response).flatMap(Future.failed(_))
-    else Future.successful(response)
+  private def handleHttpError(response: HttpResponse)(implicit ec: ExecutionContext, mat: Materializer): Future[HttpResponse] = {
+    println(s"\n ${response.toString()} \n")
+    UnauthorizedException.fromHttpResponse(response).transform {
+      case Success(exp) => Failure(exp)
+      case Failure(t)   => Success(response)
+    }
   }
+
 }
 
 object Client {

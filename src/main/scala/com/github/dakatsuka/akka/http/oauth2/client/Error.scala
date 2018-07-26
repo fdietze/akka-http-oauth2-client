@@ -10,6 +10,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 
 object Error {
   sealed abstract class Code(val value: String)
+  case object BadVerificationCode  extends Code("bad_verification_code")
   case object InvalidRequest       extends Code("invalid_request")
   case object InvalidClient        extends Code("invalid_client")
   case object InvalidToken         extends Code("invalid_token")
@@ -20,6 +21,7 @@ object Error {
 
   object Code {
     def fromString(code: String): Code = code match {
+      case "bad_verification_code"  => BadVerificationCode
       case "invalid_request"        => InvalidRequest
       case "invalid_client"         => InvalidClient
       case "invalid_token"          => InvalidToken

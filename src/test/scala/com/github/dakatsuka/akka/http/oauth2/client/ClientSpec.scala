@@ -96,6 +96,35 @@ class ClientSpec extends FlatSpec with DiagrammedAssertions with ScalaFutures wi
     }
   }
 
+  it should "return Left[UnauthorizedException] on other cases" in {
+    import strategy._
+
+    val response = HttpResponse(
+      status = StatusCodes.Unauthorized,
+      headers = Nil,
+      entity = HttpEntity(
+        `application/json`,
+        s"""
+           |{
+           |  "error": "invalid_client",
+           |  "error_description": "description",
+           |  "error_uri": "http://someuri.error"
+           |}
+         """.stripMargin
+      )
+    )
+
+    val mockConnection = Flow[HttpRequest].map(_ => response)
+    val config         = Config("xxx", "yyy", URI.create("https://example.com"))
+    val client         = Client(config, mockConnection)
+    val result         = client.getAccessToken(GrantType.AuthorizationCode, Map("code" -> "zzz", "redirect_uri" -> "https://example.com"))
+
+    whenReady(result) { r =>
+      assert(r.isLeft)
+      assert(r.left.exists(_.isInstanceOf[UnauthorizedException]))
+    }
+  }
+
   "#getConnectionWithAccessToken" should "return outgoing connection flow with access token" in {
     val accessToken = AccessToken(
       accessToken = "xxx",
