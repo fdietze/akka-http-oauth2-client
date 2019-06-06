@@ -36,7 +36,7 @@ class AuthorizationCodeStrategy extends Strategy(GrantType.AuthorizationCode) {
           "client_id"     -> config.clientId,
           "client_secret" -> config.clientSecret
         )
-      ).toEntity(HttpCharsets.`UTF-8`)
+      ).toEntity
     )
 
     Source.single(request)

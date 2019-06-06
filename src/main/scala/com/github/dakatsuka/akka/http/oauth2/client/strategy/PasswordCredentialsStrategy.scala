@@ -29,7 +29,7 @@ class PasswordCredentialsStrategy extends Strategy(GrantType.PasswordCredentials
           "client_id"     -> config.clientId,
           "client_secret" -> config.clientSecret
         )
-      ).toEntity(HttpCharsets.`UTF-8`)
+      ).toEntity
     )
 
     Source.single(request)

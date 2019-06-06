@@ -2,7 +2,7 @@ package com.github.dakatsuka.akka.http.oauth2.client.strategy
 
 import akka.NotUsed
 import akka.http.scaladsl.model.headers.RawHeader
-import akka.http.scaladsl.model.{ FormData, HttpCharsets, HttpRequest, Uri }
+import akka.http.scaladsl.model.{ FormData, HttpRequest, Uri }
 import akka.stream.scaladsl.Source
 import com.github.dakatsuka.akka.http.oauth2.client.{ ConfigLike, GrantType }
 
@@ -28,7 +28,7 @@ class RefreshTokenStrategy extends Strategy(GrantType.RefreshToken) {
           "client_id"     -> config.clientId,
           "client_secret" -> config.clientSecret
         )
-      ).toEntity(HttpCharsets.`UTF-8`)
+      ).toEntity
     )
 
     Source.single(request)

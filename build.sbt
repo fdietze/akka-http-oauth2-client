@@ -4,20 +4,22 @@ organization := "com.github.dakatsuka"
 
 name := "akka-http-oauth2-client"
 
-scalaVersion := "2.12.3"
+crossScalaVersions := Seq("2.11.11", "2.12.8")
+scalaVersion := crossScalaVersions.value.last
 
-crossScalaVersions := Seq("2.11.11", "2.12.3")
 
-lazy val akkaHttpVersion = "10.0.10"
-lazy val circeVersion    = "0.8.0"
+lazy val akkaVersion = "2.5.23"
+lazy val akkaHttpVersion = "10.1.8"
+lazy val circeVersion    = "0.11.1"
 
 libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-stream"                 % akkaVersion,
   "com.typesafe.akka" %% "akka-http"                   % akkaHttpVersion,
   "io.circe"          %% "circe-generic"               % circeVersion,
   "io.circe"          %% "circe-parser"                % circeVersion,
   "com.typesafe.akka" %% "akka-http-testkit"           % akkaHttpVersion % "test",
-  "org.scalatest"     %% "scalatest"                   % "3.0.3" % "test",
-  "org.scalamock"     %% "scalamock-scalatest-support" % "3.4.2" % "test"
+  "org.scalatest"     %% "scalatest"                   % "3.0.7" % "test",
+  "org.scalamock"     %% "scalamock-scalatest-support" % "3.6.0" % "test"
 )
 
 scalacOptions ++= Seq(
@@ -36,11 +38,11 @@ scalacOptions ++= Seq(
   "-Xlint"
 )
 
-enablePlugins(ScalafmtPlugin)
+/* enablePlugins(ScalafmtPlugin) */
 
-scalafmtOnCompile := true
+/* scalafmtOnCompile := true */
 
-scalafmtTestOnCompile := true
+/* scalafmtTestOnCompile := true */
 
 licenses := Seq("The Apache Software License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 
