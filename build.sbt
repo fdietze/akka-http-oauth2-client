@@ -4,13 +4,13 @@ organization := "com.github.dakatsuka"
 
 name := "akka-http-oauth2-client"
 
-crossScalaVersions := Seq("2.11.11", "2.12.8")
+crossScalaVersions := Seq("2.12.12", "2.13.3")
 scalaVersion := crossScalaVersions.value.last
 
 
-lazy val akkaVersion = "2.5.23"
-lazy val akkaHttpVersion = "10.1.8"
-lazy val circeVersion    = "0.11.1"
+lazy val akkaVersion = "2.5.31"
+lazy val akkaHttpVersion = "10.1.12"
+lazy val circeVersion    = "0.13.0"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-stream"                 % akkaVersion,
@@ -18,8 +18,8 @@ libraryDependencies ++= Seq(
   "io.circe"          %% "circe-generic"               % circeVersion,
   "io.circe"          %% "circe-parser"                % circeVersion,
   "com.typesafe.akka" %% "akka-http-testkit"           % akkaHttpVersion % "test",
-  "org.scalatest"     %% "scalatest"                   % "3.0.7" % "test",
-  "org.scalamock"     %% "scalamock-scalatest-support" % "3.6.0" % "test"
+  "org.scalatest"     %% "scalatest"                   % "3.2.0" % "test",
+  /* "org.scalamock"     %% "scalamock-scalatest-support" % "3.6.0" % "test" */
 )
 
 scalacOptions ++= Seq(
@@ -33,7 +33,7 @@ scalacOptions ++= Seq(
   "-language:implicitConversions",
   "-unchecked",
   "-Xcheckinit",
-  "-Xfatal-warnings",
+  /* "-Xfatal-warnings", */
   "-Xfuture",
   "-Xlint"
 )
